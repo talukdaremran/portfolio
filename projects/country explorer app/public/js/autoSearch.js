@@ -12,9 +12,6 @@ async function liveSearch() {
   const region = select.value; // <-- get current selection
   const query = input.value.trim();
 
-  console.log("region:", region);
-  console.log("query:", query);
-
   const res = await fetch(`/search?name=${query}&region=${region}`);
   const countries = await res.json();
 
