@@ -1,10 +1,12 @@
 <%- include('partials/header.ejs') %>
 <main>
+    <div>
+        <a href="/add">Add New Books</a>
+    </div>
 
     <% books.forEach(book=> { %>
-
         <div>
-            <img src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg" alt="cover">
+            <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="cover">
             
             <h2>
                 <%= book.title %>
@@ -21,11 +23,9 @@
             <p>
                 <%= book.review %>
             </p>
-
             <hr>
 
         </div>
-
     <% }) %>
 </main>
 <%- include('partials/footer.ejs') %>

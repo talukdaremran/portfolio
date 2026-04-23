@@ -25,6 +25,25 @@ app.get("/", async (req, res) => {
     }
 });
 
+app.get("/add", (req, res) => {
+    res.render("add.ejs");
+})
+
+app.post("/add", async (req, res) => {
+    try{
+        const { title, author, rating, isbn, review, date_read } = req.body;
+        await db.query(
+            `INSERT INTO books (title, author, rating, review, date_read, isbn)
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+            [title, author, rating, review, date_read || null, isbn]
+        );
+        res.redirect("/");
+    } catch (err) {
+        console.log(err);
+        res.send("Error inserting book");
+    }
+});
+
 // test db
 app.get("/test-db", async (req, res) => {
     const result = await db.query("SELECT NOW();");
