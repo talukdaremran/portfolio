@@ -23,8 +23,15 @@
             <p>
                 <%= book.review %>
             </p>
-            <hr>
 
+            <div style="display: flex; gap: 20px;">
+                <a href="/edit/<%= book.id %>">Edit</a>
+
+                <form action="/delete/<%= book.id %>" method="post" onclick="return confirm('Delete this book?')">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
+            <hr>
         </div>
     <% }) %>
 </main>

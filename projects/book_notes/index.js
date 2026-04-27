@@ -34,7 +34,7 @@ app.post("/add", async (req, res) => {
         const { title, author, rating, isbn, review, date_read } = req.body;
         await db.query(
             `INSERT INTO books (title, author, rating, review, date_read, isbn)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
+            VALUES ($1, $2, $3, $4, COALESCE($5, CURRENT_DATE), $6)`,
             [title, author, rating, review, date_read || null, isbn]
         );
         res.redirect("/");
@@ -42,6 +42,69 @@ app.post("/add", async (req, res) => {
         console.log(err);
         res.send("Error inserting book");
     }
+});
+
+app.get("/edit/:id", async (req, res) => {
+    try{
+        const { id } = req.params;
+
+        const result = await db.query(
+            "SELECT * FROM books WHERE id = $1", 
+            [id]
+        );
+
+        res.render("edit.ejs", { 
+            book: result.rows[0] 
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.send("Error loading edit page");
+    }
+});
+
+app.post("/edit/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, author, rating, isbn, review, date_read } = req.body;
+
+        await db.query(
+            `UPDATE books 
+            SET 
+            title = $1, 
+            author = $2,
+            rating = $3,
+            review = $4,
+            date_read = COALESCE($5, CURRENT_DATE),
+            isbn = $6 
+            WHERE id = $7;`,
+            [title, author, rating, review, date_read || null, isbn, id]
+        );
+
+        res.redirect("/");
+
+    } catch (err) {
+        console.log(err);
+        res.send("Error Updating!");
+    }
+});
+
+app.post("/delete/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+    
+        await db.query(
+            `DELETE FROM books WHERE id = $1;`,
+            [id]
+        );
+    
+        res.redirect("/");
+        
+    } catch (err) {
+        console.log(err);
+        res.send("Error deleting book!");
+    }
+
 });
 
 // test db
