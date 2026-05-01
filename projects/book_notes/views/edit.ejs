@@ -18,8 +18,8 @@
             <label for="isbn">ISBN: </label>
             <input name="isbn" value="<%= book.isbn %>">
 
-            <label for="review">Review: </label>
-            <textarea name="review"><%= book.review %></textarea>
+            <label for="notes">Notes: </label>
+            <textarea name="notes"><%= book.notes %></textarea>
 
             <label for="date_read">Date Read: </label>
             <input type="date" name="date_read" value="<%= book.date_read.toISOString().split('T')[0] %>">
